@@ -121,4 +121,3 @@ object Demo {
 ---
 
 Make sure you follow all the guidelines and instructions provided for the successful completion of the project.
-```
