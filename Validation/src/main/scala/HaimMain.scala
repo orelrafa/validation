@@ -7,9 +7,9 @@ object HaimMain {
     // so result1 (and) should be false, and result2 (or) should be true
     val result1:ValidationResult = UserValidation.emailEndsWithIL.
       and(UserValidation.emailLengthBiggerThan10).apply(user1)
-    println(s"MAIN: ${result1.isValid()}")
+    println(s"MAIN: ${result1.isValid}")
     val result2:ValidationResult = UserValidation.emailEndsWithIL.
       or(UserValidation.emailLengthBiggerThan10).apply(user1)
-    println(s"MAIN: ${result2.isValid()}")
+    println(s"MAIN: ${result2.isValid}")
   }
 }
