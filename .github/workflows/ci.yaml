@@ -1,0 +1,12 @@
+name: CI Workflow
+
+run-name: ${{ github.actor }} is testing their new code
+on: [push]
+jobs:
+  Test-Scala:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: sbt test
+        working-directory: Validation
