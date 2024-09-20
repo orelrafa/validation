@@ -28,10 +28,16 @@ trait UserValidation extends Function1[User, ValidationResult] {
 
 object UserValidation {
   // This method will be used to check whether all supplied conditions are fulfilled.
-//  def all() : UserValidation = {}
+  private def collective(expect: Boolean, validations: UserValidation*) : UserValidation = {
+    (user: User) => {
+      if (validations.forall(v => v(user).isValid) == expect) new Valid()
+      else new Invalid()
+    }
+  }
+  def all(validations: UserValidation*): UserValidation = collective(true, validations: _*)
 
   // This method will be used to check whether none of the supplied conditions is fulfilled.
-//  def none() : UserValidation = {}
+  def none(validations: UserValidation*): UserValidation = collective(false, validations: _*)
 
   // This method will be used to check whether the email address ends with “il”
   def emailEndsWithIL : UserValidation = {
