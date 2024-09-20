@@ -74,10 +74,10 @@ object UserValidation {
   // This method will be used to verify the password includes letters and numbers only
   def passwordIncludesLettersNumbersOnly : UserValidation = {
     (v1: User) => {
-      val nonAlphanumericRegex = new Regex("^[^a-zA-Z0-9]+$")
+      val nonAlphanumericRegex = new Regex("[^a-zA-Z0-9]")
 
       if (nonAlphanumericRegex.findFirstIn(v1.password).isEmpty) new Valid
-      else new Valid
+      else new Invalid
     }
   }
 
