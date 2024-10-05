@@ -30,7 +30,7 @@ object UserValidation {
   // This method will be used to check whether all supplied conditions are fulfilled.
   private def collective(expect: Boolean, validations: UserValidation*) : UserValidation = {
     (user: User) => {
-      if (validations.forall(v => v(user).isValid) == expect) new Valid()
+      if (validations.forall(v => v(user).isValid == expect)) new Valid()
       else new Invalid()
     }
   }

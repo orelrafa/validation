@@ -99,28 +99,65 @@ class TestUserValidation extends AnyFunSuite {
     val result:ValidationResult = UserValidation.usernameLengthBiggerThan8.apply(user)
     assert(!result.isValid)
   }
-  test("all_WORKS") {
+  test("Given_2_valid_When_all_Then_valid") {
     //"all" should "return Valid if all provided validations pass
     val user:User = new User("user1", "test@domain.co.il", "password123", 25)
-    val result:ValidationResult = UserValidation.all(UserValidation.emailEndsWithIL, UserValidation.passwordLengthBiggerThan8).apply(user)
+    val con_A = UserValidation.emailEndsWithIL
+    val con_B = UserValidation.passwordLengthBiggerThan8
+    val result:ValidationResult = UserValidation.all(con_A, con_B).apply(user)
+    assert(con_A.apply(user).isValid)
+    assert(con_B.apply(user).isValid)
     assert(result.isValid)
   }
-  test("all_FAILS") {
+  test("Given_2_mixed_validity_When_all_Then_invalid") {
     //"all" should return invalid if any provided validations fails
     val user:User = new User("user1", "test@domain.com", "password123", 25)
-    val result:ValidationResult = UserValidation.all(UserValidation.emailEndsWithIL, UserValidation.passwordLengthBiggerThan8).apply(user)
+    val con_A = UserValidation.emailEndsWithIL
+    val con_B = UserValidation.passwordLengthBiggerThan8
+    val result:ValidationResult = UserValidation.all(con_A, con_B).apply(user)
+    assert(!con_A.apply(user).isValid)
+    assert(con_B.apply(user).isValid)
     assert(!result.isValid)
   }
-  test("none_WORKS") {
+  test("Given_2_invalids_When_all_Then_invalid") {
+    //"all" should "return Valid if all provided validations pass
+    val user:User = new User("user1", "test@domain.com", "pass", 25)
+    val con_A = UserValidation.emailEndsWithIL
+    val con_B = UserValidation.passwordLengthBiggerThan8
+    val result:ValidationResult = UserValidation.all(con_A, con_B).apply(user)
+    assert(!con_A.apply(user).isValid)
+    assert(!con_B.apply(user).isValid)
+    assert(!result.isValid)
+  }
+  test("Given_2_invalids_When_none_Then_valid") {
     //"none" should return valid if none of the provided validations pass
     val user:User = new User("user1", "test@domain.com", "pass", 25)
-    val result:ValidationResult = UserValidation.none(UserValidation.emailEndsWithIL, UserValidation.passwordLengthBiggerThan8).apply(user)
+    val con_A = UserValidation.emailEndsWithIL
+    val con_B = UserValidation.passwordLengthBiggerThan8
+    val result:ValidationResult = UserValidation.none(con_A, con_B).apply(user)
+    assert(!con_A.apply(user).isValid)
+    assert(!con_B.apply(user).isValid)
     assert(result.isValid)
   }
-  test("none_FAILS") {
+
+  test("Given_mixed_validity_When_none_Then_not_valid") {
+    //"none" should return valid if none of the provided validations pass
+    val user:User = new User("user1", "test@domain.co.il", "pass", 25)
+    val con_A = UserValidation.emailEndsWithIL
+    val con_B = UserValidation.passwordLengthBiggerThan8
+    val result:ValidationResult = UserValidation.none(con_A, con_B).apply(user)
+    assert(con_A.apply(user).isValid)
+    assert(!con_B.apply(user).isValid)
+    assert(!result.isValid)
+  }
+  test("Given_2_valid_When_none_Then_not_valid") {
     //"none" should return invalid if any of the provided validations pass
     val user:User = new User("user1", "test@domain.co.il", "passwordlong", 25)
-    val result:ValidationResult = UserValidation.none(UserValidation.emailEndsWithIL, UserValidation.passwordLengthBiggerThan8).apply(user)
+    val con_A = UserValidation.emailEndsWithIL
+    val con_B = UserValidation.passwordLengthBiggerThan8
+    val result:ValidationResult = UserValidation.none(con_A, con_B).apply(user)
+    assert(con_A.apply(user).isValid)
+    assert(con_B.apply(user).isValid)
     assert(!result.isValid)
   }
 
