@@ -1,5 +1,6 @@
 package il.ac.hit.validation
 
-class Valid extends ValidationResult {
+class Valid(reason: String) extends ValidationResult {
   override def isValid: Boolean = true
+  override def getReason: Option[String] = Some(reason)
 }
